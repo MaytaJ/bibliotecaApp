@@ -2,7 +2,6 @@
 require __DIR__ . '/../config/conexion.php';
 
 $idLibro = (int) ($_GET['id_libro'] ?? 0);
-$idBibliotecario = (int) ($_POST['id_bibliotecario'] ?? 0);
 $errores = [];
 
 $libro = null;
@@ -16,11 +15,11 @@ if ($idLibro > 0) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $idLibroPost = (int) ($_POST['id_libro'] ?? 0);
     $idSocio = (int) ($_POST['id_socio'] ?? 0);
+    $idBibliotecario = (int) ($_POST['id_bibliotecario'] ?? 0);
 
-    if ($idLibroPost <= 0)
-        $errores[] = 'Debe seleccionar un libro';
-    if ($idSocio <= 0)
-        $errores[] = 'Debe seleccionar un socio';
+    if ($idLibroPost <= 0) $errores[] = 'Debe seleccionar un libro';
+    if ($idSocio <= 0) $errores[] = 'Debe seleccionar un socio';
+    if ($idBibliotecario <= 0) $errores[] = 'Debe seleccionar un bibliotecario';
 
     if (empty($errores)) {
         $check = $mysqli->prepare("SELECT ejemplares_disponibles FROM libro WHERE id = ?");
@@ -34,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $hoy = date('Y-m-d');
             $vence = date('Y-m-d', strtotime('+14 days'));
 
-            $stmt = $mysqli->prepare("INSERT INTO prestamo(id_libro, id_socio, id_bibliotecario, fecha_prestamo, fecha_vencimiento, estado)VALUES (?, ?, ?, ?, ?, 'PRESTADO')");
+            $stmt = $mysqli->prepare("INSERT INTO prestamo (id_libro, id_socio, id_bibliotecario, fecha_prestamo, fecha_vencimiento, estado) VALUES (?, ?, ?, ?, ?, 'PRESTADO')");
             $stmt->bind_param("iiiss", $idLibroPost, $idSocio, $idBibliotecario, $hoy, $vence);
             $stmt->execute();
 
@@ -47,12 +46,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
-if ($idBibliotecario <= 0)
-    $errores[] = 'Debe seleccionar un bibliotecario';
 
 $libros = $mysqli->query("SELECT id, titulo, ejemplares_disponibles FROM libro WHERE ejemplares_disponibles > 0 ORDER BY titulo");
 $socios = $mysqli->query("SELECT id, nombre FROM socio ORDER BY nombre");
 $bibliotecarios = $mysqli->query("SELECT id, nombre FROM bibliotecario ORDER BY nombre");
+
 $page = 'prestamos';
 $titulo = 'Nuevo Préstamo';
 include __DIR__ . '/../includes/header.php';
@@ -64,18 +62,15 @@ include __DIR__ . '/../includes/header.php';
 
 <div class="card-custom" style="max-width:700px;">
     <?php if ($errores) { ?>
-        <div class="alert-err"><i class="bi bi-exclamation-triangle-fill"></i>
-            <?php echo htmlspecialchars(implode('. ', $errores)); ?></div>
+        <div class="alert-err"><i class="bi bi-exclamation-triangle-fill"></i> <?php echo htmlspecialchars(implode('. ', $errores)); ?></div>
     <?php } ?>
 
     <?php if ($libro) { ?>
-        <div
-            style="background:#f8fafc; padding:15px; border-radius:12px; margin-bottom:20px; display:flex; align-items:center; gap:15px;">
+        <div style="background:#f8fafc; padding:15px; border-radius:12px; margin-bottom:20px; display:flex; align-items:center; gap:15px;">
             <div style="font-size:2.5rem;"><?php echo $libro['portada']; ?></div>
             <div>
                 <strong><?php echo htmlspecialchars($libro['titulo']); ?></strong><br>
-                <small style="color:#64748b;"><?php echo htmlspecialchars($libro['autor_nombre'] ?? ''); ?> ·
-                    <?php echo $libro['ejemplares_disponibles']; ?> disponibles</small>
+                <small style="color:#64748b;"><?php echo htmlspecialchars($libro['autor_nombre'] ?? ''); ?> · <?php echo $libro['ejemplares_disponibles']; ?> disponibles</small>
             </div>
         </div>
     <?php } ?>
@@ -89,8 +84,7 @@ include __DIR__ . '/../includes/header.php';
                 <select name="id_libro" class="form-control-custom" required>
                     <option value="">— Elegí un libro —</option>
                     <?php while ($l = $libros->fetch_assoc()) { ?>
-                        <option value="<?php echo $l['id']; ?>"><?php echo htmlspecialchars($l['titulo']); ?>
-                            (<?php echo $l['ejemplares_disponibles']; ?> disp.)</option>
+                        <option value="<?php echo $l['id']; ?>"><?php echo htmlspecialchars($l['titulo']); ?> (<?php echo $l['ejemplares_disponibles']; ?> disp.)</option>
                     <?php } ?>
                 </select>
             </div>
@@ -105,15 +99,13 @@ include __DIR__ . '/../includes/header.php';
                 <?php } ?>
             </select>
         </div>
+        
         <div class="form-row">
             <label class="form-label">Bibliotecario *</label>
-
             <select name="id_bibliotecario" class="form-control-custom" required>
                 <option value="">— Elegí un bibliotecario —</option>
                 <?php while ($b = $bibliotecarios->fetch_assoc()) { ?>
-                    <option value="<?php echo $b['id']; ?>">
-                        <?php echo htmlspecialchars($b['nombre']); ?>
-                    </option>
+                    <option value="<?php echo $b['id']; ?>"><?php echo htmlspecialchars($b['nombre']); ?></option>
                 <?php } ?>
             </select>
         </div>
@@ -124,8 +116,7 @@ include __DIR__ . '/../includes/header.php';
 
         <div style="display:flex; justify-content:flex-end; gap:10px;">
             <a href="index.php" class="btn-custom btn-back">Cancelar</a>
-            <button type="submit" class="btn-custom btn-primary-custom"><i class="bi bi-check-lg"></i> Confirmar
-                Préstamo</button>
+            <button type="submit" class="btn-custom btn-primary-custom"><i class="bi bi-check-lg"></i> Confirmar Préstamo</button>
         </div>
     </form>
 </div>

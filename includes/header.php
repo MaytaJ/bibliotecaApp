@@ -21,22 +21,13 @@ if (!isset($titulo))
         <div class="nav-container">
             <a href="<?php echo BASE_URL; ?>index.php" class="nav-brand"><i class="bi bi-book-half"></i> Biblioteca</a>
             <div class="nav-links">
-                <a href="<?php echo BASE_URL; ?>index.php" class="<?php echo $page === 'inicio' ? 'active' : ''; ?>"><i
-                        class="bi bi-house-fill"></i> Catálogo</a>
-                <a href="<?php echo BASE_URL; ?>libros/" class="<?php echo $page === 'libros' ? 'active' : ''; ?>"><i
-                        class="bi bi-book"></i> Libros</a>
-                <a href="<?php echo BASE_URL; ?>autores/" class="<?php echo $page === 'autores' ? 'active' : ''; ?>"><i
-                        class="bi bi-pen-fill"></i> Autores</a>
-                <a href="<?php echo BASE_URL; ?>socios/" class="<?php echo $page === 'socios' ? 'active' : ''; ?>"><i
-                        class="bi bi-people-fill"></i> Socios</a>
-                <a href="<?php echo BASE_URL; ?>bibliotecarios/"
-                    class="<?php echo $page === 'bibliotecarios' ? 'active' : ''; ?>">
-                    <i class="bi bi-person-badge-fill"></i> Bibliotecarios
-                </a>
-                <a href="<?php echo BASE_URL; ?>prestamos/"
-                    class="<?php echo $page === 'prestamos' ? 'active' : ''; ?>"><i class="bi bi-arrow-left-right"></i>
-                    Préstamos</a>
+                <a href="<?php echo BASE_URL; ?>index.php" class="<?php echo $page === 'inicio' ? 'active' : ''; ?>"><i class="bi bi-house-fill"></i> Catálogo</a>
+                <a href="<?php echo BASE_URL; ?>libros/" class="<?php echo $page === 'libros' ? 'active' : ''; ?>"><i class="bi bi-book"></i> Libros</a>
+                <a href="<?php echo BASE_URL; ?>autores/" class="<?php echo $page === 'autores' ? 'active' : ''; ?>"><i class="bi bi-pen-fill"></i> Autores</a>
+                <a href="<?php echo BASE_URL; ?>socios/" class="<?php echo $page === 'socios' ? 'active' : ''; ?>"><i class="bi bi-people-fill"></i> Socios</a>
+                <a href="<?php echo BASE_URL; ?>bibliotecarios/" class="<?php echo $page === 'bibliotecarios' ? 'active' : ''; ?>"><i class="bi bi-person-badge-fill"></i> Bibliotecarios</a>
+                <a href="<?php echo BASE_URL; ?>prestamos/" class="<?php echo $page === 'prestamos' ? 'active' : ''; ?>"><i class="bi bi-arrow-left-right"></i> Préstamos</a>
             </div>
         </div>
     </nav>
-    <main class="app-container"></main>
+    <main class="app-container">

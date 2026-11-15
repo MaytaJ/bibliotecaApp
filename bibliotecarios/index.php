@@ -1,4 +1,3 @@
-
 <?php
 require __DIR__ . '/../config/conexion.php';
 
@@ -45,24 +44,14 @@ include __DIR__ . '/../includes/header.php';
             <tbody>
                 <?php while ($b = $resultado->fetch_assoc()) { ?>
                     <tr>
-                        <td>
-                            <strong><?php echo htmlspecialchars($b['nombre']); ?></strong>
-                        </td>
+                        <td><strong><?php echo htmlspecialchars($b['nombre']); ?></strong></td>
                         <td><?php echo htmlspecialchars($b['telefono'] ?? '—'); ?></td>
+                        <td><span class="badge-custom badge-info"><?php echo $b['total_prestamos']; ?></span></td>
                         <td>
-                            <span class="badge-custom badge-info">
-                                <?php echo $b['total_prestamos']; ?>
-                            </span>
-                        </td>
-                        <td>
-                            <a href="form.php?id=<?php echo $b['id']; ?>"
-                               class="btn-custom btn-icon btn-edit">
+                            <a href="form.php?id=<?php echo $b['id']; ?>" class="btn-custom btn-icon btn-edit">
                                 <i class="bi bi-pencil"></i>
                             </a>
-
-                            <a href="eliminar.php?id=<?php echo $b['id']; ?>"
-                               class="btn-custom btn-icon btn-delete"
-                               onclick="return confirm('¿Eliminar bibliotecario?');">
+                            <a href="eliminar.php?id=<?php echo $b['id']; ?>" class="btn-custom btn-icon btn-delete" onclick="return confirm('¿Eliminar bibliotecario?');">
                                 <i class="bi bi-trash"></i>
                             </a>
                         </td>
